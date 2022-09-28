@@ -1,7 +1,21 @@
-function [outputArg1,outputArg2] = parse_node_(inputArg1,inputArg2)
-%PARSE_NODE_ 此处显示有关此函数的摘要
-%   此处显示详细说明
-outputArg1 = inputArg1;
-outputArg2 = inputArg2;
+function [hierarchy, bracelets] = parse_node_end(fid, bracelets)
+%PARSE_NODE_END parse end site hierarchy
+% 
+hierarchy = containers.Map;
+
+line = fgetl(fid);
+
+while feof(fid) ~= 1
+    if (regexp(strip(line), '^{')==1)
+        bracelets = bracelets + 1;
+        break
+    end
+    
+    line = fgetl(fid);    
+end
+
+line = fgetl(fid);
+while feof(fid) ~= 1
+    
 end
 

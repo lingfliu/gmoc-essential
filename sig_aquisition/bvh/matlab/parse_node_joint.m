@@ -1,9 +1,44 @@
 function [hierarchy, bracelets] = parse_node_joint(fid, bracelets)
-%PARSE_NODE_JOINT 此处显示有关此函数的摘要
-%   此处显示详细说明
+%PARSE_NODE_JOINT parse joint hierarchy
 hierarchy = containers.Map;
 
 hierarchy('children') = [];
+
+line = fgetl(fid);
+
+while feof(fid) ~= 1
+    if (regexp(strip(line), '^{')==1)
+        bracelets = bracelets + 1;
+        break
+    end
+end
+
+line = fgetl(fid);
+while feof(fid) ~= 1
+    attr = parse_node_attr(line);
+    if (attr.Count > 0)
+        keySet = keys(attr);
+        for m = 1:length(keySet)
+            hierarchy(keySet{m}) = attr(keySet{m});
+        end
+    else
+        if (regexp(strip(line), '^JOINT') == 1)
+            child_hierarchy, bracelets = parse_node_joint(fid, bracelets);
+            child_hierarchy('category') = 'joint';
+            strs = split(strip(line));
+            child_hierarchy('name') = strs{2};
+            hierarchy('children') = [hierarchy('children'), child_hierarchy];
+        elseif (regexp(strip(line), '^End Site') == 1)
+            [child_hierarchy, bracelets] = parse_node_end(fid, bracelets);
+            hierarchy('children') = [hierarchy('children'), child_hierarchy];
+        elseif (regexp(strip(line), '^}') == 1)
+            bracelets = bracelets - 1;
+            break;        
+        end
+    end
+    
+    line = fgetl(fid);
+end
 
 end
 

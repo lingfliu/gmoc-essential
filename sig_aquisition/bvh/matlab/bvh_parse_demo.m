@@ -54,19 +54,21 @@ if (foundHierarchy)
             end
         else
             if (regexp(strip(line), '^JOINT') == 1)
-                child_hierarchy, bracelets = parse_node_joint(fid, bracelets);
+                [child_hierarchy, bracelets] = parse_node_joint(fid, bracelets);
                 child_hierarchy('category') = 'joint';
                 strs = split(strip(line));
                 child_hierarchy('name') = strs{2};                
                 hierarchy('children') = [hierarchy('children'), child_hierarchy];
             elseif (regexp(strip(line), '^End Site') == 1)
-                child_hierarchy, bracelets = parse_node_end(fid, bracelets);
+                [child_hierarchy, bracelets] = parse_node_end(fid, bracelets);
                 hierarchy('children') = [hierarchy('children'), child_hierarchy];
             elseif (regexp(strip(line), '^}') == 1)
                 bracelets = bracelets - 1;
                 break;
             end
-        end       
+        end
+        
+        line = fgetl(fid);
     end
     
 end
