@@ -28,7 +28,7 @@ def parse_node_attr(line):
     else:
         return None
 
-def parse_end(f, bracelets):
+def parse_node_end(f, bracelets):
     line = f.readline()
     if not re.match('^{', line.strip()):
         return None
@@ -49,9 +49,10 @@ def parse_end(f, bracelets):
     else:
         return ({'offset':offset}, bracelets)
 
-def parse_node(f, bracelets):
+def parse_node_joint(parent_hierarchy, f, bracelets):
     hierarchy = {}
     hierarchy['children'] = []
+    hierarchy['parent'] = parent_hierarchy
 
     line = f.readline()
     while line:
@@ -65,13 +66,13 @@ def parse_node(f, bracelets):
         attr = parse_node_attr(line)
         if not attr:
             if re.match('^JOINT ', line.strip()):
-                (child_hierarchy, bracelets) = parse_node(f, bracelets)
+                (child_hierarchy, bracelets) = parse_node_joint(hierarchy, f, bracelets)
                 child_hierarchy['category'] = 'joint'
                 child_hierarchy['name'] = line.strip().split(' ')[1]
                 children.append(child_hierarchy)
                 # print('parsing ' + child_hierarchy['name'])
             elif re.match('^End Site', line.strip()):
-                res = parse_end(f, bracelets)
+                res = parse_node_end(f, bracelets)
                 if res:
                     (child_hierarchy, bracelets) = res
                     child_hierarchy['category'] = 'end'
@@ -138,13 +139,13 @@ def bvh_import(path, name):
             else:
                 # recursive reading
                 if re.match('^JOINT', line.strip()):
-                    (child_hierarchy, bracelets) = parse_node(f, bracelets)
+                    (child_hierarchy, bracelets) = parse_node_joint(hierarchy, f, bracelets)
                     child_hierarchy['category'] = 'joint'
                     child_hierarchy['name'] = line.strip().split(' ')[1]
                     hierarchy['children'].append(child_hierarchy)
                     # print('parsing ' + child_hierarchy['name'])
                 elif re.match('^End Site', line.strip()):
-                    res = parse_end(f, bracelets)
+                    res = parse_node_end(f, bracelets)
                     if res:
                         (child_hierarchy, bracelets) = res
                         child_hierarchy['category'] = 'end'
@@ -206,3 +207,14 @@ def bvh_import(path, name):
         return (hierarchy, np.array(data), frameTime)
     else:
         return ()
+
+def hierarchy_flat(hierarchy, flat):
+    flat.append(hierarchy)
+    for c in hierarchy['children']:
+        if c['category'] == 'end':
+            # flat.append(c)
+            pass
+        else:
+            flat = hierarchy_flat(c, flat)
+
+    return flat

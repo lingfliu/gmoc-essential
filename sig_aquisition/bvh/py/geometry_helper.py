@@ -22,22 +22,42 @@ def rotate_matrix_z(rho):
                       [math.sin(rho), math.cos(rho), 0],
                       [0, 0, 1]])
 
-def rotate_matrix(thetas, order):
-    rmat = np.matrix([[1,0,0],
-                     [0,1,0],
-                      [0,0,1]])
-    for i in range(len(order)):
-        o = order[i]
-        if o == 'x':
-            rmat = rmat*rotate_matrix_x(thetas[i])
-        elif o == 'y':
-            rmat = rmat*rotate_matrix_y(thetas[i])
-        elif o == 'z':
-            rmat = rmat*rotate_matrix_z(thetas[i])
-        else:
-            rmat = np.matrix([[1, 0, 0],
-                              [0, 1, 0],
-                              [0, 0, 1]])
-            return rmat
+'''rotation matrix in R-P-Y order'''
+def rotate_matrix(thetas):
+    #
+    # rmat = np.matrix([[1,0,0],
+    #                  [0,1,0],
+    #                   [0,0,1]])
+    # for i in range(len(order)):
+    #     o = order[i]
+    #     if o == 'x':
+    #         rmat = rotate_matrix_x(thetas[i])*rmat
+    #     elif o == 'y':
+    #         rmat = rotate_matrix_y(thetas[i])*rmat
+    #     elif o == 'z':
+    #         rmat = rotate_matrix_z(thetas[i])*rmat
+    #     else:
+    #         rmat = np.matrix([[1, 0, 0],
+    #                           [0, 1, 0],
+    #                           [0, 0, 1]])
+    #         return rmat
+
+    # raw
+    cosR = math.cos(thetas[0])
+    sinR = math.sin(thetas[0])
+
+    # pitch
+    cosP = math.cos(thetas[1])
+    sinP = math.sin(thetas[1])
+
+    # yaw
+    cosY = math.cos(thetas[2])
+    sinY = math.sin(thetas[2])
+
+    rmat = np.mat([[cosR*cosY-sinR*sinP*sinY, -sinR*cosP, cosR*sinY+sinR*sinP*cosY],
+            [sinR*cosY+cosR*sinP*sinY, cosR*cosP, sinR*sinY-cosR*sinP*cosY],
+            [-cosP*sinY, sinP, cosP*cosY]])
+
+    # rmat = np.mat([[math.cos(thetas[0])*math.cos([2])-math.sin(thetas[0])*math.sin(thetas[1])))]])
 
     return rmat

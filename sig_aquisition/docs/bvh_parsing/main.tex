@@ -1,0 +1,50 @@
+\documentclass{report}
+\usepackage{amsmath}
+\usepackage{array}
+\usepackage{bm}
+
+\begin{document}
+\title{Biovision Hierarchy file parsing}
+\author{Lingfeng Liu, ISSC, ECJTU, lingfeng.liu@ecjtu.edu.cn}
+
+\maketitle
+
+\section{Biovision Hierarchy file format}
+Biovision hierarchy file with suffix '.bvh' is a commonly used file format for recording human motion captures for 3D model animation reconstruction. A .bvh file is composed by two parts, the hierarchy declaration and the motion data.
+
+\subsection{Hierarchy declaration in .bvh file}
+The .bvh files specifies 59 body segments, or joints, including finger joints, and is declared in a tree structure according to the anatomic joint connections of the skeleton. Every segment in the hierarchy contains 2 attributes:
+\begin{enumerate}
+\item The offset of the segment relative to its parent, given as 'OFFSET 0 0 0' (in centimeters).
+\item The channels of the segment in the motion recording, which include: the local position (in centimeters) and the rotation (in degrees) along the pitch (x), yaw (y), and roll (z) axes in its parent local coordinate.
+\end{enumerate}
+
+The channels of a segment may only include the rotation, thus the offset of the segment is used to compute its position in its parent local coordinate.
+
+If the segment reach the end of the body e.g. the fingers, feet, head, a segment named 'End Site' is declared to denote the end of the hierarchy. This segment only declares its offsets, and no channels is recorded on its position or rotations in the data part. The skeleton calculation should exclude any value assignment from the frame data to it.
+
+The data part start with the 'MOTION' notation, followed by a blank line, a line started with 'Frames' to note the number of frames recorded in the file, and a line started with 'Frame Time' to note the sampling rate of the frame recordings.
+
+The data should start immediately after the 'Frame Time' line, with the motion recorded one line per frame. The number of the values corresponding to the order of the hierarchy declared above and is divided by the channels per segment. For instance, if all the segments are declared with channels 'Xposition Yposition Zposition Zrotation Yrotation Zrotation', the data is assigned every 6 values to the segment accordingly.
+
+\section{Skeleton reconstruction}
+To construct the skeleton, one should compute the global coordinate of each segment. For the root segment (Hips), its global position is computed as:
+\begin{equation}
+\bm{p}_0 = \bm{o}_0
+\end{equation}
+where $\bm{o}_0$ is the offset of the root segment in the global coordinate, which is the Xposition, Yposition, Zposition at the start of each line in the data part.
+
+The golbal coordinate of the joint segment next to the root segment is given by:
+\begin{equation}
+\bm{p}_1 = \bm{p}_0+\bm{R}_0\bm{o}_1
+\end{equation}
+where $\bm{o}_1$ is the Xposition, Yposition, Zposition of the joint segment in the data, or the offset of the joint segment, and the $\bm{R}_0$ is the rotation matrix of the root segment.
+
+Therefore, the joint segment next to the above joint is given by:
+\begin{align}
+\bm{p}_2 &= \bm{p}_1+\bm{R}_0\bm{R}_1\bm{o}_2\nonumber\\
+         &= \bm{p}_0+\bm{R}_0\bm{o}_1+\bm{R}_0\bm{R}_1\bm{o}_2
+\end{align}
+
+The skeleton is reconstructed thereby recursively. 
+\end{document}
