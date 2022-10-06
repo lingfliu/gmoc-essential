@@ -15,16 +15,11 @@ end
 
 line = fgetl(fid);
 while feof(fid) ~= 1
-    attr = parse_node_attr(strip(line));
-    if (attr.Count > 0)
-            keySet = keys(attr);
-            for m = 1:length(keySet)
-                if (regexp(keySet{m},'offset')==1)
-                    hierarchy.offset = attr(keySet{m});
-                elseif (regexp(keySet{m}, 'channels')==1)
-                    hierarchy.channels = attr(keySet{m});
-                end
-            end
+    [attr, attr_name] = parse_node_attr(line);
+    if strcmp(attr_name, 'offset')
+        hierarchy.offset = attr;
+    elseif strcmp(attr_name, 'channels')
+        hierarchy.channels = attr;
     else
         if (regexp(strip(line), '^}')==1)
             bracelets = bracelets - 1;

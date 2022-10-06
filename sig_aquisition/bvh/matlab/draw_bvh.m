@@ -1,7 +1,11 @@
 function [] = draw_bvh(fig_id, hierarchy,data, frameTime)
 %DRAW_BVH draw bvh animation files
 
-for idx = 300:length(data(:,1))
+fid = 1;
+for idx = 1:50:length(data(:,1))        
+    figure(fid);
+    axis equal
+    hold on
     dat = data(idx,:);
     motion = dat(1:6);
     p_root = motion(1:3)';
@@ -9,12 +13,15 @@ for idx = 300:length(data(:,1))
     p_root = rmat_root * p_root;
     
     dat = dat(7:end);
-    for m = 1:length(hierarchy.children)
-        dat = draw_motion(fig_id, p_root, rmat_root, hierarchy.children(m), dat);
+    for m = 1:length(hierarchy.children)        
+        dat = draw_motion(fid, p_root, rmat_root, hierarchy.children(m), dat);
     end
     
+    fid = fid + 1;
     break
-    pause(0.1)
+%     pause(0.5)
+%     figure(fig_id);
+%     clf(fig_id)
 end
 end
 
