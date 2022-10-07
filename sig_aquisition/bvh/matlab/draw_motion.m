@@ -1,5 +1,5 @@
 function dat = draw_motion(fig_id, p_parent, rmat_parent, hierarchy, data);
-%DRAW_MOTION 此处显示有关此函数的摘要
+% This function is deprecated
 %   此处显示详细说明
 
 
