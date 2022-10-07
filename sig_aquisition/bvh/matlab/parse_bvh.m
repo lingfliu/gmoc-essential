@@ -1,8 +1,11 @@
 function [hierarchy, data, frameTime] = parse_bvh(file_path)
 %PARSE_BVH biovision hierarchy and data parsing
-% returning params
-% hierarchy: skeleton hierarchy
-% data: recorded data in order by the hierarchy
+% input
+%   file_path
+% returns 
+%   hierarchy: skeleton hierarchy
+%   data: mocap data ordered by hierarchy spec.
+%   frameTime: frame sampling time in seconds
 
 hierarchy = struct('category','','name','','offset',[], 'channels',[],'children',[]);
 data = [];

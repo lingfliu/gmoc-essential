@@ -1,5 +1,9 @@
 function rmat = calc_rmat(r, p, y)
 %CALC_RMAT calculate rotation matrix in ZXY (rpy) order
+% calculate rotation matrix in direct composite mode
+% this method might be less efficient than individual rotation computation,
+% i.e. RzRxRy, should check later
+
 cosR = cos(r);
 sinR = sin(r);
 

@@ -4,7 +4,7 @@ clc;
 %%%所有bvh文件、脚本和函数需保存在同一文件夹下方可运行%%%%%
 %%
 %%%数据从bvh文件中拉取,并存入对应的.xlsx表格文件中%%%%
-Data = importdata('walk1_2Char00.bvh','',inf);
+Data = importdata('run_4Char00.bvh','',inf);
 init = 353;   %bvh文件中旋转角数据起始行，根据文件节点个数的不同修改
 DATA = [];
 for n = init : length(Data(:,1))
@@ -52,7 +52,7 @@ B15 = DATA(:,220:222);
 B16 = DATA(:,226:228);
 B17 = DATA(:,232:234);
 B18 = DATA(:,238:240);
-DATA2 = [A1,B1,B2,B3,B4,B5,B6,B7,B8,A9,B10,B11,B12,B13,B14,B15,B16,B17,B18];
+DATA2 = [A1,B1,B2,B3,B4,B5,B6,B7,B8,B9,B10,B11,B12,B13,B14,B15,B16,B17,B18];
 xlswrite('location_data.xlsx',DATA1); %在图集文件夹下新建excel表格读入数据
 xlswrite('rotation angle_data.xlsx',DATA2); %在图集文件夹下新建excel表格读入数据
 
@@ -66,7 +66,7 @@ QQ = [];
 LL = [];
 RLA = [];
 %  figure
-for xx = 10:40:450 %输入起始帧，采样间隔和结束帧
+for xx = 1 %输入起始帧，采样间隔和结束帧
  [Q,L,RLa] = weizhi_jisuan( xx ,data,data0 ); %实测数据计算；xx代表帧数，data为旋转角部分的数据，data0为P0初始根节点坐标；
 % picname = [num2str(xx),'.bmp'];
 % saveas(gcf,picname)

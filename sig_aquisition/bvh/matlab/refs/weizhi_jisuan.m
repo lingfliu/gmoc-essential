@@ -4,7 +4,7 @@ function [ Q,L,RLa ] = weizhi_jisuan( xx ,data,data0)
 data
 B=data;
 C=B';
-D=C(:,xx);  %取整个运动序列中的第一帧（修改数字切换帧数）
+D=C(:,xx);  %取整个运动序列中的第xx帧（修改数字切换帧数）
 data0
 B0=data0;
 C0=B0';

@@ -1,5 +1,5 @@
 function [] = draw_bvh(fig_id, hierarchy,data, frameTime)
-%DRAW_BVH draw bvh animation files
+%DRAW_BVH this function is deprecated
 
 fid = 1;
 for idx = 1:50:length(data(:,1))        
@@ -18,10 +18,8 @@ for idx = 1:50:length(data(:,1))
     end
     
     fid = fid + 1;
-    break
-%     pause(0.5)
-%     figure(fig_id);
-%     clf(fig_id)
+    pause(0.5)
+    figure(fig_id);    
 end
 end
 

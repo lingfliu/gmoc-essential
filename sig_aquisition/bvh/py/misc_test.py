@@ -44,16 +44,24 @@ import matplotlib.pyplot as plt
 import math
 
 # axes = plt.figure().add_subplot(projection='3d')
-axes = plt.figure().add_subplot(1,1,1)
-for i in range(100):
-    plt.ion()
-    # plt.cla()
-    x = np.array([v/180*math.pi for v in range(i*10)])
-    y = np.array([v/180*math.pi for v in range(i*10)])
-    z = np.array([math.cos(x[d]) + math.sin(y[d]) for d in range(len(x))])
+# axes = plt.figure().add_subplot(1,1,1)
+# for i in range(100):
+#     plt.ion()
+#     # plt.cla()
+#     x = np.array([v/180*math.pi for v in range(i*10)])
+#     y = np.array([v/180*math.pi for v in range(i*10)])
+#     z = np.array([math.cos(x[d]) + math.sin(y[d]) for d in range(len(x))])
+#
+#     axes.plot(x,y)
+#     plt.show()
+#     plt.pause(0.1)
 
-    axes.plot(x,y)
-    plt.show()
-    plt.pause(0.1)
+from bvh import Bvh
 
+with open('sample/run_1Char00.bvh') as f:
+    mocap = Bvh(f.read())
 
+    print([str(item) for item in mocap.root])
+    # mocap.frame_joint_channels(0, )
+    print(mocap.nframes)
+    a = 1
