@@ -27,7 +27,6 @@ for t = 1:length(motion(:,1,1,1))
        p = [mot(4, 1:3, hierarchy_flat(idx,1)); mot(4, 1:3, idx)];
        plot3(p(:,1), p(:,2),p(:,3));
    end
-   
    pause(frame_time)
 end
 

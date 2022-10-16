@@ -4,9 +4,6 @@ import math
 def translate(pos, translate_vec):
     return np.add(pos, translate_vec)
 
-# def translate_vector(x,y,z):
-#     return np.array([x,y,z])
-
 def rotate_matrix_x(theta):
     return np.matrix([[1, 0, 0],
                      [0, math.cos(theta), -math.sin(theta)],
@@ -22,42 +19,31 @@ def rotate_matrix_z(rho):
                       [math.sin(rho), math.cos(rho), 0],
                       [0, 0, 1]])
 
-'''rotation matrix in R-P-Y order'''
-def rotate_matrix(thetas):
-    #
-    # rmat = np.matrix([[1,0,0],
-    #                  [0,1,0],
-    #                   [0,0,1]])
-    # for i in range(len(order)):
-    #     o = order[i]
-    #     if o == 'x':
-    #         rmat = rotate_matrix_x(thetas[i])*rmat
-    #     elif o == 'y':
-    #         rmat = rotate_matrix_y(thetas[i])*rmat
-    #     elif o == 'z':
-    #         rmat = rotate_matrix_z(thetas[i])*rmat
-    #     else:
-    #         rmat = np.matrix([[1, 0, 0],
-    #                           [0, 1, 0],
-    #                           [0, 0, 1]])
-    #         return rmat
-
+'''rotation matrix given r, p, y'''
+def rotate_matrix(raw, pitch, yaw):
     # raw
-    cosR = math.cos(thetas[0])
-    sinR = math.sin(thetas[0])
+    cosR = math.cos(raw)
+    sinR = math.sin(raw)
 
     # pitch
-    cosP = math.cos(thetas[1])
-    sinP = math.sin(thetas[1])
+    cosP = math.cos(pitch)
+    sinP = math.sin(pitch)
 
     # yaw
-    cosY = math.cos(thetas[2])
-    sinY = math.sin(thetas[2])
+    cosY = math.cos(yaw)
+    sinY = math.sin(yaw)
 
     rmat = np.mat([[cosR*cosY-sinR*sinP*sinY, -sinR*cosP, cosR*sinY+sinR*sinP*cosY],
             [sinR*cosY+cosR*sinP*sinY, cosR*cosP, sinR*sinY-cosR*sinP*cosY],
             [-cosP*sinY, sinP, cosP*cosY]])
 
-    # rmat = np.mat([[math.cos(thetas[0])*math.cos([2])-math.sin(thetas[0])*math.sin(thetas[1])))]])
-
     return rmat
+
+'''convert global position into local position & rotate
+args:
+    pos_x: global positions of joints
+return:
+    [x, y, z, raw, pitch, yaw]: local position & rotation of joint 2 with respect to local coordinate from joint 1
+'''
+def pos2rotate(pos_0, pos_1, pos_2):
+    return [0, 0, 0, 0, 0, 0]

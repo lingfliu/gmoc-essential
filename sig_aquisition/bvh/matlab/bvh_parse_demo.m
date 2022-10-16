@@ -5,11 +5,11 @@
 clear;clc;
 
 % file_path = 'sample/run_1Char00.bvh'
-file_path = 'sample/run_3Char00.bvh'
+% file_path = 'sample/run_3Char00.bvh'
 % file_path = 'sample/run_4Char00.bvh'
 % file_path = 'sample/run_5Char00.bvh'
 % file_path = 'sample/walk-cycle.bvh'
-% file_path = 'sample/rand_ycx_9Char00.bvh'
+file_path = 'sample/rand_ycx_9Char00.bvh'
 
 % parsing bvh files
 [hierarchy, data, frame_time] = parse_bvh(file_path);
@@ -33,5 +33,5 @@ end
 
 % draw motions
 fig_id = 123;
-draw_bvh_motion(motion,hierarchy_flat, index_trunc, frame_time, fig_id);
+draw_bvh_motion(motion, hierarchy_flat, index_trunc, frame_time, fig_id);
 
