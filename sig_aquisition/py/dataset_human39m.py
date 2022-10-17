@@ -1,7 +1,7 @@
 import os
 import pickle
 
-'''load Human 3.6M dataset by the original code gendata    
+'''load Human 3.6M dataset 
 args:
     root_path: root path of the dataset
     selects:  select indice on the loading, if set [], load all data
@@ -22,22 +22,43 @@ args:
     selects:  select indice on the loading, if set [], load all data meta
 return: [meta] meta arrays
     meta: {
+        'root_path': 
+        'data_list': [], list of the data files
         'hierarchy': [], this is only valid if the hierarchy is uniform throughout the dataset
         'sps': number,
         ...
     }
 '''
-def load_human36m_meta(root_path, selects=[]):
+def load_human36m_meta(root_path):
     if not os.path.exists(root_path):
         return []
 
     return []
 
+'''
+args: 
+    meta: see load_human36m_meta
+    subjects: subject name list
+return:
+    selects: file list of selection
+'''
+def select_data_by_subject(meta, subjects):
+    return []
+
+'''
+args: 
+    meta: see load_human36m_meta
+    motions: motion list
+return:
+    selects: file list of selection
+'''
+def select_data_by_motion(meta, motions):
+    return []
 
 '''load Human 3.6M labels:
 args: 
     root_path: root path of the dataset
-    selects:  select indice on the loading, this should be set as the returns of the load_human36m_data
+    selects:  see select_data_by_subject, select_data_by_motion
 return: [label] label arrays
 '''
 def load_human36m_label(root_path, selects=[]):

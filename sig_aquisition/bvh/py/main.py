@@ -5,7 +5,7 @@ from geometry_helper import translate
 
 
 def main():
-    path = './sample'
+    path = '../../sample'
     filename = 'rand_ycx_9Char00.bvh'
     # filename = 'run_1Char00.bvh'
     (hierarchy, data, sampling_rate) = bvh_import(path, filename)

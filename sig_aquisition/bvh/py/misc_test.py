@@ -58,7 +58,7 @@ import math
 
 from bvh import Bvh
 
-with open('sample/run_1Char00.bvh') as f:
+with open('../../sample/run_1Char00.bvh') as f:
     mocap = Bvh(f.read())
 
     print([str(item) for item in mocap.root])
